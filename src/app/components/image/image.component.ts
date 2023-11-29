@@ -7,7 +7,7 @@ import { Component, Input, OnDestroy ,Output, AfterViewInit, EventEmitter, OnCha
 })
 export class ImageComponent implements OnChanges, OnDestroy,OnInit, AfterViewInit{
 
-  img: string = '';
+  img: string = ' ';
 
   @Input('img')
   set changeImg(newImg: string){
@@ -15,12 +15,12 @@ export class ImageComponent implements OnChanges, OnDestroy,OnInit, AfterViewIni
     console.log('change just img => ', this.img);
   }
 
-  @Input() alt: string = "";
+  @Input() alt: string = ' ';
 
   @Output() loaded = new EventEmitter<string>();
 
-  counter = 0;
-  counterFn: number | undefined;
+  // counter = 0;
+  // counterFn: number | undefined;
 
   constructor(){
     console.log('constructor', 'imgValue =>', this.img);
@@ -32,10 +32,10 @@ export class ImageComponent implements OnChanges, OnDestroy,OnInit, AfterViewIni
 
   ngOnInit(): void {
     console.log('ngOnInit', 'imgValue =>', this.img);
-    this.counterFn = window.setInterval(() =>{
-      this.counter += 1;
-      console.log('run counter')
-    }, 1000)
+    // this.counterFn = window.setInterval(() =>{
+    //   this.counter += 1;
+    //   console.log('run counter')
+    // }, 1000)
   }
 
   ngAfterViewInit(): void {
@@ -44,7 +44,7 @@ export class ImageComponent implements OnChanges, OnDestroy,OnInit, AfterViewIni
 
   ngOnDestroy(): void {
     console.log('ngOnDestroy');
-    window.clearInterval(this.counterFn);
+    // window.clearInterval(this.counterFn);
   }
 
   imageDeafult = './assets/images/placeholder-img.png';
