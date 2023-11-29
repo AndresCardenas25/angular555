@@ -20,6 +20,7 @@
   <app-product [product]="product" *ngFor="let product of products" 
   (addedProduct)="onAddToShoppingCart($event)"
   (showProduct)="onShowDetail($event)">  </app-product>
+  <button (click)="loadMore()" > load More </button>
 </div>
 <div class="product-detail" [class.active]="showProductDetail">
   <div *ngIf="productChoosen">
