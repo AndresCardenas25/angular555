@@ -13,8 +13,6 @@ import { Auth } from './models/auth.model';
 export class AppComponent {
   imgParent = '';
   showImg = true;
-  token = '';
-  correoUsuario = '';
 
   constructor ( private authService: AuthService,
                 private userService: UsersService) {
@@ -41,19 +39,19 @@ export class AppComponent {
 
   login(){
     this.authService.login('hojsak@gmail.com', '232323')
-    .pipe(
-      switchMap( (data: Auth) => {
-          this.token = data.access_token;
-          return this.authService.profile(data.access_token);
-        })
-    )
-    .subscribe(profile => {
-      this.correoUsuario = profile.email;
+    // .pipe(
+    //   switchMap( (data: Auth) => {
+    //       this.token = data.access_token;
+    //       return this.authService.profile(data.access_token);
+    //     })
+    // )
+    .subscribe(token => {
+      console.log(token);
     }
   )}
 
   getProfile(){
-    this.authService.profile(this.token)
+    this.authService.profile()
     .subscribe(profile => {
       console.log(profile);
     }

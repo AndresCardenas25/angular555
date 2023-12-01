@@ -34,7 +34,10 @@
       </ul>
     </nav>
     <div class="info">
-      <div class="account"> {{correoUsuario}} </div>
+      <div class="account"> <button (click)="usuarioProfile()" > Iniciar sesion </button> </div>
+        <div>
+          {{correoUsuario}}
+        </div>
       <div>
         <a>
           <img src="./assets/svg/carro-compra.png" alt="logo">
