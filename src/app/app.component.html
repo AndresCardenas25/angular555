@@ -6,6 +6,19 @@
 <button (click)="login()">
  Login
 </button>
+<p>
+  <a href="./../assets/files/texto.txt" download> Descargar</a>
+</p>
+<p>
+  <button (click)="downloadPdf()" > Descargar PDF</button>
+</p>
+<p>
+  <input type="file" (change)="onUpload($event)">
+</p>
+
+<p>
+  <img *ngIf="imgRta" [src]="imgRta" alt="description of image">
+</p>
 
 <button (click)="getProfile()">
   Get Profile

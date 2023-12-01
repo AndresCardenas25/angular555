@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { UsersService } from './services/users.service';
+import { HttpClient } from '@angular/common/http';
 import { switchMap } from 'rxjs';
 import { Auth } from './models/auth.model';
+import { FilesService } from './services/files.service'
 
 
 @Component({
@@ -13,9 +15,11 @@ import { Auth } from './models/auth.model';
 export class AppComponent {
   imgParent = '';
   showImg = true;
+  imgRta = '';
 
   constructor ( private authService: AuthService,
-                private userService: UsersService) {
+                private userService: UsersService,
+                private filesServices: FilesService,) {
   }
 
   toogleImg(){
@@ -56,4 +60,22 @@ export class AppComponent {
       console.log(profile);
     }
     )}
+
+  downloadPdf(){
+    this.filesServices.getFiles('my-pdf', 'https://young-sands-07814.herokuapp.com/api/files/dummy.pdf', 'application/pdf')
+    .subscribe()
+  }
+
+  onUpload(event: Event){
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.item(0);
+    if(file){
+      this.filesServices.uploadFile(file)
+      .subscribe( rta => {
+      this.imgRta = rta.location;
+    })
+    }
+  }
+
+
 }
