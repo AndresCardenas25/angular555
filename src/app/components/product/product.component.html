@@ -2,5 +2,7 @@
 <h2> {{product.price | currency:'COP ' }} </h2>
 <p> {{product.title}} </p>
 <p appHighlight> {{ product.description }} </p>
+<p> {{ product.taxes | currency:'COP '  }}</p>
+
 <button (click)="onShowDetail()"> Ver detalle </button>
 <button (click)="onAddToCart()"> Add Cart</button>

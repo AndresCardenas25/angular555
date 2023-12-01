@@ -6,6 +6,10 @@ import { StoreService} from '../../services/store.service'
 
 import { ProductsService } from '../../services/products.service'
 
+import { switchMap } from 'rxjs/operators';
+
+import { zip } from 'rxjs';
+
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -42,6 +46,8 @@ export class ProductsComponent implements OnInit{
 
   offset = 0;
 
+  statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
+
   constructor( private storeService: StoreService, private productsService: ProductsService ){
     this.myShoppingCart = this.storeService.getShoppingCart();
   }
@@ -64,12 +70,35 @@ export class ProductsComponent implements OnInit{
   }
 
   onShowDetail(id: string){
+    this.statusDetail = 'loading';
     this.productsService.getProduct(id)
-                        .subscribe( data => {
-                          this.toogleProductDetail();
-                          this.productChoosen = data;
-                        });
+                        .subscribe({
+                          next: (data: Product) => {
+                            this.toogleProductDetail();
+                            this.productChoosen = data;
+                          },
+                          error: (errorMessage: any) => {
+                            window.alert(errorMessage);
+                            this.statusDetail = 'error';
+                          },
+                          complete: () => {
+                            this.statusDetail = 'success';
+                          }
+                        })
   }
+
+  readAndUpdate(id: string){
+    this.productsService.getProduct(id)
+    .pipe(
+      switchMap((product) => {
+        return this.productsService.update(product.id, {title: 'change'});
+      })
+    )
+    .subscribe(data => {
+      console.log(data);
+    });
+  }
+
 
   createNewProduct(){
     const product: CreateProductDTO = {
@@ -96,7 +125,7 @@ export class ProductsComponent implements OnInit{
 
       this.productsService.update(id, changes)
                           .subscribe(data => {
-                            const productIndex = this.products.findIndex( 
+                            const productIndex = this.products.findIndex(
                               item => item.id === this.productChoosen.id);
                               this.products[productIndex] = data;
                           });
@@ -109,8 +138,8 @@ export class ProductsComponent implements OnInit{
                           .subscribe(() => {
                             const productIndex = this.products.findIndex(
                               item => item.id === this.productChoosen.id);
-                              this.products.splice(productIndex, 1);   
-                              this.showProductDetail = false;                
+                              this.products.splice(productIndex, 1);
+                              this.showProductDetail = false;
                           });
     }
 
